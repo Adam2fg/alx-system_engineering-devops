@@ -1,2 +1,2 @@
 #!/bin/bash
-echo 'in memoriam' > /tmp/iamafile
+cat /tmp/iamafile
