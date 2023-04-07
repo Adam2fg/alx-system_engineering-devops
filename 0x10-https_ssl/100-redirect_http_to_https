@@ -1,0 +1,33 @@
+global
+    # Set the maximum number of connections to 20000
+    maxconn 20000
+
+defaults
+    # Set the default mode to HTTP
+    mode http
+    # Set the timeout values
+    timeout connect 5s
+    timeout client 50s
+    timeout server 50s
+
+frontend http
+    # Bind to port 80 and listen for incoming HTTP traffic
+    bind *:80
+    # Redirect HTTP traffic to HTTPS with a 301 response
+    redirect scheme https if !{ ssl_fc }
+    # Set the default backend to the HTTPS backend
+    default_backend https
+
+frontend https
+    # Bind to port 443 and listen for incoming HTTPS traffic
+    bind *:443 ssl crt /etc/haproxy/certs/
+    # Set the default backend to the web server backend
+    default_backend web_server
+
+backend https
+    # Forward requests to the web server on port 443
+    server web_server 192.168.1.1:443 ssl verify none
+
+backend web_server
+    # Forward requests to the web server on port 80
+    server web_server 192.168.1.1:80
