@@ -40,16 +40,16 @@ defaults
         option http-server-close
 
 #--munyasi.tech-params-begin--
-frontend munyasi.tech-frontend
+frontend kinetech.tech-frontend
         bind *:80
-        bind *:443 ssl crt /etc/haproxy/certs/munyasi.tech.pem
+        bind *:443 ssl crt /etc/haproxy/certs/kinetech.tech.pem
         acl letsencrypt-acl path_beg /.well-known/acme-challenge/
         http-request set-header X-Forwarded-Proto http
         # ADDITIONS
         use_backend letsencrypt-backend if letsencrypt-acl
         default_backend munyasi.tech-backend
 
-backend munyasi.tech-backend
+backend kinetech.tech-backend
         balance roundrobin
         redirect scheme https if !{ ssl_fc }
         server 20639-web-01 3.227.217.150:80 check
@@ -57,4 +57,4 @@ backend munyasi.tech-backend
 
 backend letsencrypt-backend
         server letsencrypt 127.0.0.1:54321
-#--munyasi.tech-params-end--
+#--kinetech.tech-params-end--
